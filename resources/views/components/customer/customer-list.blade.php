@@ -15,9 +15,9 @@
                 <thead>
                 <tr class="bg-light">
                     <th>No</th>
-                    <th>Name</th>
+                    <th>Customer Name</th>
                     <th>Email</th>
-                    <th>user</th>
+                    <th>Added by</th>
                     <th>Mobile</th>
                     <th>Action</th>
                 </tr>

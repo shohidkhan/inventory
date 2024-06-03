@@ -27,8 +27,29 @@ class DashboardController extends Controller {
         $suppliers = Suplier::where("user_id", $user_id)->count();
         $brands = Brand::where("user_id", $user_id)->count();
         $supplier_invoices = SuplierInvoice::where("user_id", $user_id)->count();
-        $total_purchase = SuplierInvoice::where("user_id", $user_id)->sum("payable");
 
+        //total purchase
+        $total_purchase = SuplierInvoice::where("user_id", $user_id)->sum("payable");
+        // tODAY purchase
+        $today_purchase = SuplierInvoice::where("user_id", $user_id)->whereDate("created_at", date("Y-m-d"))->sum("payable");
+        //YESTERDAY purchase
+        $yesterday_purchase = SuplierInvoice::where("user_id", $user_id)->whereDate("created_at", date("Y-m-d", strtotime("-1 days")))->sum("payable");
+        //this week purchase
+        $this_week_purchase = SuplierInvoice::where("user_id", $user_id)->whereBetween("created_at", [date("Y-m-d", strtotime("-7 days")), date("Y-m-d")])->sum("payable");
+        // last week purchase
+        $last_week_purchase = SuplierInvoice::where("user_id", $user_id)->whereBetween("created_at", [date("Y-m-d", strtotime("-14 days")), date("Y-m-d", strtotime("-7 days"))])->sum("payable");
+        //this month purchase
+        $this_month_purchase = SuplierInvoice::where("user_id", $user_id)->whereMonth("created_at", date("m"))->sum("payable");
+        //this year purchase
+        $this_year_purchase = SuplierInvoice::where("user_id", $user_id)->whereYear("created_at", date("Y"))->sum("payable");
+        //last year purchase
+        $last_year_purchase = SuplierInvoice::where("user_id", $user_id)->whereYear("created_at", date("Y") - 1)->sum("payable");
+        //last month purchase
+        $last_month_purchase = SuplierInvoice::where("user_id", $user_id)->whereMonth("created_at", date("m") - 1)->sum("payable");
+
+        // return [
+        //     "last_month_purchase" => $last_month_purchase,
+        // ];
         //today sale
         $today_sale = Invoice::where("user_id", $user_id)->whereDate("created_at", date("Y-m-d"))->sum("payable");
         //this week sale
@@ -98,6 +119,14 @@ class DashboardController extends Controller {
             "last_year_profit" => round($last_year_profit, 2),
             "last_month_profit" => round($last_month_profit, 2),
 
+            "today_purchase" => $today_purchase,
+            "yesterday_purchase" => $yesterday_purchase,
+            "this_month_purchase" => $this_month_purchase,
+            "this_year_purchase" => $this_year_purchase,
+            "last_year_purchase" => $last_year_purchase,
+            "last_month_purchase" => $last_month_purchase,
+            "this_week_purchase" => $this_week_purchase,
+            "last_week_purchase" => $last_week_purchase,
 
         ];
     }

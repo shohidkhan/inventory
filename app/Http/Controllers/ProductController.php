@@ -21,7 +21,7 @@ class ProductController extends Controller {
                 "price" => "required|numeric",
                 "buying_price" => "required|numeric",
                 "unit" => "required|string",
-                "img_url" => "required|mimes:png,jpg,jpeg|image",
+                "img_url" => "required|image",
                 "brand_id" => "required",
                 "suplier_id" => "required",
                 "stock" => "required",

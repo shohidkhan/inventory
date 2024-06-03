@@ -102,7 +102,7 @@
                     <td>${item["qty"]}</td>
                     <td>${item["purchase_price"]}</td>
                     <td>${item["qty"] * item["product"]["buying_price"]}</td>
-                        
+                  
                 </tr>
             `;
             invoiceList.append(row)

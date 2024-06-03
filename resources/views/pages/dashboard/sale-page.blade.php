@@ -313,7 +313,9 @@
 
         async function ProductList(){
             try{
-            let res= await axios.get("/product-list",HeaderToken());
+                let res=await axios.get("/product-list",HeaderToken());
+
+
 
             let productTable=$("#productTable");
 

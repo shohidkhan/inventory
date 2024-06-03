@@ -31,14 +31,16 @@
             let res=await axios.get(`/sales-report/${FormDate}/${ToDate}`,HeaderTokenWithBolb());
 
             const url=window.URL.createObjectURL(new Blob([res.data]));
-
+            
             const link=document.createElement('a');
             link.href=url;
-            
             link.setAttribute('download','sales-report.pdf');
+            
             document.body.appendChild(link);
+            
             link.click();
-            link.remove();
+            console.log(link);
+            // link.remove();
         }
     }
 

@@ -17,7 +17,7 @@
                 <tr class="bg-light">
                     <th>No</th>
                     <th>Category</th>
-                    <th>User</th>
+                    <th>Added By</th>
                     <th>Action</th>
                 </tr>
                 </thead>

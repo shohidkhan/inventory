@@ -20085,6 +20085,7 @@ fieldset:disabled .btn {
     border-color: #cb0c9f;
 }
 
+
 .btn-primary .btn.bg-outline-primary,
 .btn.bg-gradient-primary .btn.bg-outline-primary {
     border: 1px solid #cb0c9f;
@@ -21353,6 +21354,10 @@ label,
 
 .bg-gradient-primary {
     background-image: linear-gradient(310deg, #7928CA 0%, #FF0080 100%);
+}
+
+.bg-dashbord-summary{
+    background-image: linear-gradient( #7928CA ,#FF0080 );
 }
 
 .bg-gradient-secondary {
