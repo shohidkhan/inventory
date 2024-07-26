@@ -17,7 +17,6 @@ class SupplierInvoiceController extends Controller {
         return view("pages.dashboard.purchase-page");
     }
 
-    // function createSupplierInvoice(Request $request){
     //     DB::beginTransaction();
     //     try{
     //         $request->validate([
@@ -68,7 +67,7 @@ class SupplierInvoiceController extends Controller {
 
     function supplierInvoiceList() {
         try {
-            $purchase_invoices = SuplierInvoice::with("suplier", "brand", "user")->where("user_id", Auth::id())->orderBy("id", "desc")->get();
+            $purchase_invoices = SuplierInvoice::with("suplier", "brand", "user")->where("user_id", Auth::id())->orderBy("id", "asc")->get();
 
             return $purchase_invoices;
         } catch (Exception $e) {

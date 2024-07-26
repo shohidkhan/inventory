@@ -21,6 +21,8 @@
                     <th>Vat</th>
                     <th>Discount</th>
                     <th>Payable</th>
+                    <th>Paid</th>
+                    <th>Due</th>
                     <th>Action</th>
                 </tr>
                 </thead>
@@ -93,6 +95,7 @@ async function getList(){
     try{
     showLoader();
     let res=await axios.get("/invoice-list",HeaderToken());
+    // console.log(res);
     hideLoader();
 
     let tableList=$("#tableList");
@@ -109,6 +112,7 @@ async function getList(){
                     ${index+1}
                 </td>
                 <td>
+                    
                     ${item["customer"]["name"]}
                 </td>
                 <td>
@@ -125,6 +129,12 @@ async function getList(){
                 </td>
                 <td>
                     ${item["payable"]}
+                </td>
+                <td>
+                    ${ item["due"] ? item["due"]["total_paid"] : item["paid"]}
+                </td>
+                <td>
+                    ${item["due"] ? item["due"]["total_due"] : 0}
                 </td>
                 <td>
                     <button data-id="${item['id']}" data-cus="${item['customer']['id']}" class="viewBtn btn btn-outline-success text-sm px-3 py-1 btn-sm m-0"><i class="fa text-sm fa-eye"></i></button>

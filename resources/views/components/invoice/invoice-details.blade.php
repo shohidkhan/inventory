@@ -45,9 +45,12 @@
                             <div class="col-12">
                                 <p class="text-bold text-xs my-1 text-dark"> TOTAL: <i class="bi bi-currency-dollar"></i> <span id="total"></span></p>
                                 <p class="text-bold text-xs my-1 text-dark"> VAT(5%): <i class="bi bi-currency-dollar"></i>  <span id="vat"></span></p>
-                                <p class="text-bold text-xs my-2 text-dark"> PAYABLE: <i class="bi bi-currency-dollar"></i>  <span id="payable"></span></p>
-                                
                                 <p class="text-bold text-xs my-1 text-dark"> Discount: <i class="bi bi-currency-dollar"></i>  <span id="discount"></span></p>
+                                <p class="text-bold text-xs my-2 text-dark"> PAYABLE: <i class="bi bi-currency-dollar"></i>  <span id="payable"></span></p>
+                                <p class="text-bold text-xs my-2 text-dark"> Paid: <i class="bi bi-currency-dollar"></i>  <span id="paid"></span></p>
+                                <p class="text-bold text-xs my-2 text-dark"> Due: <i class="bi bi-currency-dollar"></i>  <span id="Due"></span></p>
+                                
+                                
                             </div>
 
                         </div>
@@ -78,7 +81,9 @@
         document.getElementById("discount").innerText=res.data["invoice"]["discount"];
         document.getElementById("vat").innerText=res.data["invoice"]["vat"];
         document.getElementById("payable").innerText=res.data["invoice"]["payable"];
-        document.getElementById("invoiceNo").innerText=res.data["invoice"]["invoice_no"]
+        document.getElementById("invoiceNo").innerText=res.data["invoice"]["invoice_no"];
+        document.getElementById("paid").innerText=res.data["invoice"]["due"] ? res.data["invoice"]["due"]["total_paid"]:res.data["invoice"]["paid"];
+        document.getElementById("Due").innerText=res.data["invoice"]["due"] ? res.data["invoice"]["due"]["total_due"]:0;
 
         console.log(res);
         let invoiceList=$("#invoiceList");

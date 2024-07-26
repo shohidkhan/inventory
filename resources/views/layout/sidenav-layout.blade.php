@@ -55,7 +55,7 @@
                 <div class="user-dropdown-content ">
                     <div class="mt-4 text-center">
                         <img class="icon-nav-img" src="{{asset('images/user.webp')}}" alt=""/>
-                        <h6>User Name</h6>
+                        <h6>User Name </h6>
                         <hr class="user-dropdown-divider  p-0"/>
                     </div>
                     <a href="{{url('/userProfile')}}" class="side-bar-item">
@@ -122,6 +122,10 @@
         <span class="side-bar-item-caption">Sells Invoice</span>
     </a>
 
+    <a href="{{url('/customer-due')}}" class="side-bar-item">
+        <i class="bi bi-file-earmark-bar-graph"></i>
+        <span class="side-bar-item-caption">Customer Due</span>
+    </a>
     <a href="{{url('/report')}}" class="side-bar-item">
         <i class="bi bi-file-earmark-bar-graph"></i>
         <span class="side-bar-item-caption">Sells Report</span>

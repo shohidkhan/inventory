@@ -67,6 +67,7 @@ class ProductController extends Controller {
                 "suplier_id" => $supplier_id,
                 "user_id" => Auth::id(),
             ]);
+            // dd($supplier_invoice);
 
             $supplier_invoice_id = $supplier_invoice->id;
 

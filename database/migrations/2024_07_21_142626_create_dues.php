@@ -9,23 +9,25 @@ return new class extends Migration {
      * Run the migrations.
      */
     public function up(): void {
-        Schema::create('invoices', function (Blueprint $table) {
+        Schema::create('dues', function (Blueprint $table) {
             $table->id();
-            $table->string("invoice_no", 100);
-            $table->string("total", 50);
-            $table->string("vat", 50);
-            $table->string("discount", 50);
-            $table->string("payable", 50);
-            $table->string("profit", 50);
-            $table->unsignedBigInteger("user_id");
+            $table->unsignedBigInteger('user_id');
             $table->foreign("user_id")->references("id")->on("users")
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
+
+            $table->unsignedBigInteger("invoice_id");
+            $table->foreign("invoice_id")->references("id")->on("invoices")
+                ->cascadeOnUpdate()
+                ->restrictOnDelete();
+
             $table->unsignedBigInteger("customer_id");
             $table->foreign("customer_id")->references("id")->on("customers")
                 ->cascadeOnUpdate()
                 ->restrictOnDelete();
-
+            $table->string("total_payable", 100);
+            $table->string("total_paid", 100);
+            $table->string("total_due", 100);
             $table->timestamps();
         });
     }
@@ -34,6 +36,6 @@ return new class extends Migration {
      * Reverse the migrations.
      */
     public function down(): void {
-        Schema::dropIfExists('invoices');
+        Schema::dropIfExists('dues');
     }
 };

@@ -4,6 +4,7 @@ use App\Http\Controllers\BrandController;
 use App\Http\Controllers\CategoryController;
 use App\Http\Controllers\CustomerController;
 use App\Http\Controllers\DashboardController;
+use App\Http\Controllers\DueController;
 use App\Http\Controllers\InvoiceController;
 use App\Http\Controllers\ProductController;
 use App\Http\Controllers\ReportController;
@@ -118,3 +119,13 @@ Route::get("/sales-report/{FromDate}/{ToDate}", [ReportController::class, "sales
 //prechase report
 Route::view("/purchase-report", "pages.dashboard.purchase-report");
 Route::get("/purchase-report/{FromDate}/{ToDate}", [ReportController::class, "purchaseReport"])->middleware("auth:sanctum");
+
+//customer Due page
+Route::view("/customer-due", "pages.dashboard.customer-due");
+Route::get("/due-list", [DueController::class, "dueList"])->middleware("auth:sanctum");
+Route::post("/single-due", [DueController::class, "singleDue"])->middleware("auth:sanctum");
+Route::post("/update-due", [DueController::class, "updateDue"])->middleware("auth:sanctum");
+
+// Route::get("/demo", function () {
+//     return view("report.demo");
+// });

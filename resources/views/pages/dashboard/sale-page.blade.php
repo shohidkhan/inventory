@@ -40,11 +40,23 @@
                        <div class="col-12">
                            <p class="text-bold text-xs my-1 text-dark"> TOTAL: <i class="bi bi-currency-dollar"></i> <span id="total"></span></p>
                            <p class="text-bold text-xs my-1 text-dark"> VAT(5%): <i class="bi bi-currency-dollar"></i>  <span id="vat"></span></p>
-                           <p class="text-bold text-xs my-2 text-dark"> PAYABLE: <i class="bi bi-currency-dollar"></i>  <span id="payable"></span></p>
-                           
                            <p class="text-bold text-xs my-1 text-dark"> Discount: <i class="bi bi-currency-dollar"></i>  <span id="discount"></span></p>
-                           <span class="text-xxs">Discount(%):</span>
-                           <input   type="text" value="0" onkeyup="DiscountChange()" class="form-control w-40 " id="discountP"/>
+                           <p class="text-bold text-xs my-2 text-dark"> PAYABLE: <i class="bi bi-currency-dollar"></i>  <span id="payable"></span></p>
+                           <p class="text-bold text-xs my-2 text-dark"> Paid Amount: <i class="bi bi-currency-dollar"></i>  <span id="paidAmount"></span></p>
+                           <p class="text-bold text-xs my-2 text-dark"> Due: <i class="bi bi-currency-dollar"></i>  <span id="dueAmount"></span></p>
+                         
+                           <div class="d-flex justify-space-between">
+                                <div>
+                                    <span class="text-xxs">Discount(%):</span>
+                                    <input   type="text" value="0" onkeyup="DiscountChange()" class="form-control w-80 " id="discountP"/>
+                                </div>
+
+                                <div>
+                                    <span class="text-xxs">Paid:</span>
+                                    <input   type="text" value="0" onkeyup="currentPaid()" class="form-control w-80 " id="paid"/>
+                                </div>
+                           </div>
+                           
                            <p>
                               <button onclick="createInvoice()" class="btn  my-3 bg-gradient-primary w-40">Confirm</button>
                            </p>
@@ -145,6 +157,9 @@
          function DiscountChange(){
             CalculateGrandTotal();
          }
+          function currentPaid(){
+            CalculateGrandTotal();
+          }
 
          function  CalculateGrandTotal(){
             let Total=0;
@@ -152,6 +167,8 @@
             let Payable=0;
             let Discount=0;
             let discountPercentage=(parseFloat(document.getElementById('discountP').value));
+            let PaidAmount=(parseFloat(document.getElementById('paid').value));
+            let Due=0;
 
             
             InvoiceItemList.forEach(function (item){
@@ -159,19 +176,19 @@
             });
 
             if(discountPercentage>0){
-                Discount= parseFloat(((Total*discountPercentage)/100).toFixed(2));
-           
-                Total=parseFloat((Total-Discount).toFixed(2));
-             
                 Vat= parseFloat(((Total*5)/100).toFixed(2));
-               
-                Payable=parseFloat((Total+Vat).toFixed(2));
+                totalAndVat=parseFloat((Vat+Total).toFixed(2));
+                Discount= parseFloat(((totalAndVat*discountPercentage)/100).toFixed(2));  
+                // Total=parseFloat((Total-Discount).toFixed(2));
+                // Vat= parseFloat(((Total*5)/100).toFixed(2));
+                Payable=parseFloat((totalAndVat-Discount).toFixed(2));
+                Due=Payable-PaidAmount;
             }
             else{
                 Vat= parseFloat(((Total*5)/100).toFixed(2));
-            
                 Payable=parseFloat((Total+Vat).toFixed(2));
                 // console.log(Payable)
+                Due=Payable-PaidAmount;
             }
              
            
@@ -180,6 +197,8 @@
             document.getElementById('vat').innerText=Vat;
             document.getElementById('discount').innerText=Discount;
             document.getElementById('payable').innerText=Payable;
+            document.getElementById('dueAmount').innerText=Due;
+            document.getElementById('paidAmount').innerText=PaidAmount;
          }
         function removeItem (index){
             InvoiceItemList.splice(index,1);
@@ -213,6 +232,7 @@
                 `;
                 invoiceList.append(row)
             });
+
             CalculateGrandTotal();
             
             $(".remove").on("click",function(){
@@ -314,52 +334,49 @@
         async function ProductList(){
             try{
                 let res=await axios.get("/product-list",HeaderToken());
+                 let productTable=$("#productTable");
+
+                let productList=$("#productList");
+
+                productTable.DataTable().destroy();
+                productList.empty();
 
 
+                res.data.forEach(function(item,index){
+                    let row=`
 
-            let productTable=$("#productTable");
+                        <tr>
+                            <td>${item["name"]} <p>($ ${item["price"]})</p></td>
+                        <td class="product_qty">${item["stock"] > 0 ? item["stock"] : 0 }</td>
+                        <td>
+                            <a data-name="${item['name']}" data-price="${item['price']}" data-id="${item['id']}" data-brand="${item['brand_id']}" class="btn btn-outline-dark addProduct  text-xxs px-2 py-1  btn-sm m-0">Add</a>
+                                
+                            </td>
+                        </tr>
+                    
+                    `;
 
-            let productList=$("#productList");
-
-            productTable.DataTable().destroy();
-            productList.empty();
-
-
-            res.data.forEach(function(item,index){
-                let row=`
-
-                    <tr>
-                        <td>${item["name"]} <p>($ ${item["price"]})</p></td>
-                       <td class="product_qty">${item["stock"] > 0 ? item["stock"] : 0 }</td>
-                       <td>
-                        <a data-name="${item['name']}" data-price="${item['price']}" data-id="${item['id']}" data-brand="${item['brand_id']}" class="btn btn-outline-dark addProduct  text-xxs px-2 py-1  btn-sm m-0">Add</a>
-                            
-                        </td>
-                    </tr>
-                
-                `;
-
-                productList.append(row)
-            });
+                    productList.append(row)
+                });
 
             
-            $(".addProduct").on("click", function(){
-                let PName=$(this).data("name");
-                let PPrice=$(this).data("price");
-                let PId=$(this).data("id");
-                let brand_id=$(this).data("brand");
-                addModal(PId,PName,PPrice,brand_id)
-            });
+                $(".addProduct").on("click", function(){
+                    let PName=$(this).data("name");
+                    let PPrice=$(this).data("price");
+                    let PId=$(this).data("id");
+                    let brand_id=$(this).data("brand");
+                    addModal(PId,PName,PPrice,brand_id)
+                });
 
-            new DataTable('#productTable',{
-                order:[[0,'desc']],
-                // scrollCollapse: false,
-                // info: false,
-                // lengthChange: false
-                lengthMenu:[5,10,15,20,25]
-            });
+                new DataTable('#productTable',{
+                    order:[[0,'desc']],
+                    // scrollCollapse: false,
+                    // info: false,
+                    // lengthChange: false
+                    lengthMenu:[5,10,15,20,25]
+                });
         }catch(e){
-            unauthorized(e.response.status);
+                unauthorized(e.response.status);
         }
         }
 
@@ -372,6 +389,8 @@
             let qty= document.getElementById("PQty").value;
             let payable=document.getElementById("payable").innerText;
             let customer_id=document.getElementById("CId").innerText;
+            let paidAmount=document.getElementById("paidAmount").innerText;
+            let dueAmount=document.getElementById("dueAmount").innerText;
             let data={
                 "total":total,
                 "discount":discount,
@@ -379,7 +398,10 @@
                 "qty":qty,
                 "payable":payable,
                 "customer_id":customer_id,
-                "products":InvoiceItemList
+                "paidAmount":paidAmount,
+                "dueAmount":dueAmount,
+                "products":InvoiceItemList,
+                
             }
 
             if(customer_id.length===0){
@@ -389,6 +411,7 @@
             }else{
                 showLoader()
                 let res=await axios.post("/create-invoice",data,HeaderToken());
+                console.log(res.config.data)
                 hideLoader();
 
                 if(res.status===200 && res.data["status"]==='success'){

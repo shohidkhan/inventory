@@ -5,16 +5,16 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class Invoice extends Model {
+class Due extends Model {
     use HasFactory;
 
     protected $guarded = [];
 
-    public function customer() {
+    function customer() {
         return $this->belongsTo(Customer::class);
     }
 
-    public function due() {
-        return $this->hasOne(Due::class);
+    function invoice() {
+        return $this->belongsTo(Invoice::class);
     }
 }

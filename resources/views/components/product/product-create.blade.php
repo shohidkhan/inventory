@@ -211,6 +211,9 @@ getAndFillSupplier();
                 document.getElementById("save-form").reset();
                 await getList();
                 successToast(res.data["message"]);
+                setTimeout(() => {
+                        window.location.href="/purchase-invoice";
+                    }, 1000);
             }else{
                 errorToast(res.data["message"]);
             }

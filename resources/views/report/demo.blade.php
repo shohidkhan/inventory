@@ -5,29 +5,33 @@
    <style>
     
     .company_info{
+        margin-bottom: 50px;
         font-family: sans-serif;
-    }
-    .conatiner{
-        margin:20px;
-        border: 1px solid gray;
-        padding: 20px;
+        display: flow-root;
     }
     .common{
         display: inline;
     }
     .right{
         float: right;
+        clear: both;
     }
     .left{
         float: left;
+        clear: both;
+    }
+    .clear_fit{
+        clear: both;
     }
     .top_title{
         text-align: center;
         margin-bottom: 40px;
         font-family: Arial, Helvetica, sans-serif;
     }
-    .clear_fit{
-        clear: both;
+    .container{
+        margin:20px;
+        border: 1px solid gray;
+        padding: 20px;
     }
     .customers {
         font-family: Arial, Helvetica, sans-serif;
@@ -73,12 +77,11 @@
             <p>Address: <strong>Dhanmondi, Dhaka</strong></p>
             <p>Phone: <strong>+880167777777	</strong></p>
         </div>
-      
         <div class="right common">
             <a style="display: block; margin-bottom: 20px" href="https://ibb.co/Gxvtndv"><img style="width: 75px;" src="https://i.ibb.co/bWg2Q6g/logo.png" alt="logo" border="0"></a>
             <span>Date</span>  
-            <p>From: <strong>{{$FormDate}}</strong></p> 
-            <p>To: <strong>{{$ToDate}}</strong></p> 
+            <p>From: </p> 
+            <p>To: </p> 
         </div>
         <div class="clear_fit"></div>
     </div>
@@ -100,11 +103,11 @@
             <tbody>
             <tr>
                 <td>Sales Report</td>
-                <td>{{$FormDate}} to {{$ToDate}}</td>
+                {{-- <td>{{$FormDate}} to {{$ToDate}}</td>
                 <td>{{$total}}</td>
                 <td>{{$discount}}</td>
                 <td>{{$vat}}</td>
-                <td>{{$payable}} </td>
+                <td>{{$payable}} </td> --}}
             </tr>
             </tbody>
         </table>
@@ -127,7 +130,7 @@
             </tr>
             </thead>
             <tbody>
-            @foreach ($list as $item)
+            {{-- @foreach ($list as $item)
                 <tr>
                     <td>{{$item->customer->name}}</td>
                     <td>{{$item->customer->mobile}}</td>
@@ -138,7 +141,7 @@
                     <td>{{$item->payable }}</td>
                     <td>{{$item->created_at->format('d-m-Y') }}</td>
                 </tr>
-            @endforeach
+            @endforeach --}}
     
             </tbody>
         </table>

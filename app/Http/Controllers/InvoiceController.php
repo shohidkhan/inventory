@@ -3,6 +3,7 @@
 namespace App\Http\Controllers;
 
 use App\Models\Customer;
+use App\Models\Due;
 use App\Models\Invoice;
 use App\Models\InvoiceProduct;
 use App\Models\Product;
@@ -31,6 +32,8 @@ class InvoiceController extends Controller {
             $vat = $request->input("vat");
             $payable = $request->input("payable");
             $customer_id = $request->input("customer_id");
+            $total_paid = $request->input("paidAmount");
+            $total_due = $payable - $total_paid;
             //make unique inovice number for invoice tracking
             $invoice_no = "INV-" . time();
 
@@ -54,6 +57,7 @@ class InvoiceController extends Controller {
                 "payable" => $payable,
                 "profit" => $total_profit,
                 "customer_id" => $customer_id,
+                "paid" => $total_paid,
             ]);
 
             $invoice_id = $invoice->id;
@@ -76,6 +80,22 @@ class InvoiceController extends Controller {
                 Product::where("id", $EachProduct["product_id"])->decrement("stock", $EachProduct["qty"]);
             }
 
+            // $isCusomerExistInDue = Due::where("customer_id", $customer_id)->first();
+            // if($isCusomerExistInDue){
+
+            // }
+
+            if ($total_due > 0) {
+                Due::create([
+                    "user_id" => $user_id,
+                    "invoice_id" => $invoice_id,
+                    "customer_id" => $customer_id,
+                    "total_payable" => $payable,
+                    "total_paid" => $total_paid,
+                    "total_due" => $total_due,
+                ]);
+            }
+
             DB::commit();
 
             return response()->json(["status" => "success", "message" => "Invoice created successfully"], 200);
@@ -88,7 +108,7 @@ class InvoiceController extends Controller {
     function invoiceList() {
         try {
             $user_id = Auth::id();
-            return Invoice::where("user_id", $user_id)->with("customer")->get();
+            return Invoice::where("user_id", $user_id)->with("customer", "due")->get();
         } catch (Exception $e) {
             return response()->json(["error" => false, "message" => $e->getMessage()]);
         }
@@ -99,7 +119,7 @@ class InvoiceController extends Controller {
         try {
             $user_id = Auth::id();
             $customer = Customer::where("user_id", $user_id)->where("id", $request->input("customer_id"))->first();
-            $invoice = Invoice::where("user_id", $user_id)->where("id", $request->input("invoice_id"))->first();
+            $invoice = Invoice::where("user_id", $user_id)->where("id", $request->input("invoice_id"))->with("due")->first();
             $product = InvoiceProduct::where("user_id", $user_id)->where("invoice_id", $request->input("invoice_id"))->with("product")->get();
 
             return array(

@@ -44,7 +44,7 @@ class ReportController extends Controller {
                 "FormDate" => $FormDate,
                 "ToDate" => $ToDate,
             ];
-
+            $customPaper = array(0, 0, 720, 1440);
             $pdf = Pdf::loadView("report.SalesReport", $data);
 
             return $pdf->download();

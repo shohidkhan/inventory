@@ -4,10 +4,7 @@
         <div class="card px-5 py-5">
             <div class="row justify-content-between ">
                 <div class="align-items-center col">
-                    <h5>Invoices</h5>
-                </div>
-                <div class="align-items-center col">
-                    <a    href="{{url("/sale")}}" class="float-end btn m-0 bg-gradient-primary">Create Sale</a>
+                    <h5>Purchase Invoices</h5>
                 </div>
             </div>
             <hr class="bg-dark "/>
@@ -41,7 +38,7 @@
         
         showLoader();
         let res= await axios.get("/supplier-invoice-list",HeaderToken());
-        console.log(res.data);
+        // console.log(res.data);
         hideLoader();
 
         let tableData = $("#tableData");
@@ -50,6 +47,7 @@
         tableList.empty();
 
         res.data.forEach((item,index) => {
+            console.log(item);
             let row=`
                 <tr class="text-center">
                     <td>${index+1}</td>
