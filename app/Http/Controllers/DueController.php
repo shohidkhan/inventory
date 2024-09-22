@@ -14,7 +14,7 @@ class DueController extends Controller {
         try {
             $user_id = Auth::id();
 
-            $due_lists = Due::where("user_id", $user_id)->with("customer", "invoice")->get();
+            $due_lists = Due::where("user_id", $user_id)->with("customer", "invoice")->where("total_due", ">", 0)->get();
             return $due_lists;
         } catch (Exception $e) {
             return response()->json(["error" => false, "message" => $e->getMessage()]);
