@@ -4,7 +4,7 @@
             <div class="modal-body text-center">
                 <h3 class=" mt-3 text-warning">Delete !</h3>
                 <p class="mb-3">Once delete, you can't get it back.</p>
-                <input class="d-n0ne" id="deleteID"/>
+                <input class="d-none" id="deleteID"/>
             </div>
             <div class="modal-footer justify-content-end">
                 <div>
